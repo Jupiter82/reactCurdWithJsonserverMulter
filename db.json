@@ -1,0 +1,24 @@
+{
+  "product": [
+    {
+      "id": "1",
+      "name": "asd",
+      "brand": "asdas",
+      "category": "dasda",
+      "price": "1212",
+      "description": "qweqw",
+      "imageFilename": "download2.jpg",
+      "createdAt": "2025-02-26"
+    },
+    {
+      "name": "asdas",
+      "brand": "asda",
+      "category": "asda",
+      "price": "454",
+      "description": "4545",
+      "imageFilename": "download1.jpg",
+      "createdAt": "2025-01-31",
+      "id": "2"
+    }
+  ]
+}
