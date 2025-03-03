@@ -19,6 +19,16 @@
       "imageFilename": "download1.jpg",
       "createdAt": "2025-01-31",
       "id": "2"
+    },
+    {
+      "name": "अधिश",
+      "brand": "dasd",
+      "category": "asda",
+      "price": "34565345",
+      "description": "asdas",
+      "imageFilename": "download3.jpg",
+      "createdAt": "2025-03-26",
+      "id": "3"
     }
   ]
 }

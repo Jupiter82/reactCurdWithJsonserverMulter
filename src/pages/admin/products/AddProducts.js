@@ -12,6 +12,7 @@ function Add() {
     imageFilename: "",
     createdAt: "",
   });
+  const [imageFile, setImageFile] = useState(null);
   const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -23,9 +24,23 @@ function Add() {
         product.length > 0
           ? (Math.max(...product.map((u) => u.id)) + 1).toString()
           : 1;
-      const newData = { ...inputData, id: newId };
 
-      axios.post("http://localhost:4000/product", newData);
+      // Prepare formdata
+      const formData = new FormData();
+      formData.append("id", newId);
+      formData.append("name", inputData.name);
+      formData.append("brand", inputData.brand);
+      formData.append("category", inputData.category);
+      formData.append("price", inputData.price);
+      formData.append("description", inputData.description);
+      formData.append("createdAt", inputData.createdAt);
+      if (imageFile) {
+        formData.append("image", imageFile);
+      }
+
+      axios.post("http://localhost:4000/product", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       alert("Data Added Successfully!");
       navigate("/admin/products");
     } catch (error) {
@@ -81,7 +96,7 @@ function Add() {
             ></input>
           </div>
           <div className="flex flex-col">
-            <label htmlFor="desciption">Description:</label>
+            <label htmlFor="description">Description:</label>
             <input
               id="description"
               type="text"
@@ -89,23 +104,18 @@ function Add() {
               onChange={(e) =>
                 setInputData({ ...inputData, description: e.target.value })
               }
-            ></input>
+            />
           </div>
           <div className="flex flex-col">
             <label htmlFor="imageFilename">ImageFile:</label>
             <input
               id="imageFilename"
               type="file"
-              accept="image"
+              accept="image/*"
               onChange={(e) => {
-                console.log(e.target.files[0]);
-                console.log(e.target.files[0].name);
-                setInputData({
-                  ...inputData,
-                  imageFilename: e.target.files[0].name,
-                });
+                setImageFile(e.target.files[0]);
               }}
-            ></input>
+            />
           </div>
           <div className="flex flex-col">
             <label htmlFor="createdAt">Create Date</label>

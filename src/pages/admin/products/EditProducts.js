@@ -17,7 +17,7 @@ function EditProduct() {
   });
   const navigate = useNavigate();
   useEffect(() => {
-    const fetcheData = async () => {
+    const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:4000/product/" + id);
         setInputData(response.data);
@@ -25,7 +25,7 @@ function EditProduct() {
         console.log(error);
       }
     };
-    fetcheData();
+    fetchData();
   }, [id]);
 
   const handleSubmit = async (event) => {
@@ -91,7 +91,7 @@ function EditProduct() {
             ></input>
           </div>
           <div className="flex flex-col">
-            <label htmlFor="desciption">Description:</label>
+            <label htmlFor="description">Description:</label>
             <input
               id="description"
               type="text"
