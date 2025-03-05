@@ -52,40 +52,36 @@ server.use((req, res, next) => {
 });
 
 // POST request validation
-server.post("/products", (req, res, next) => {
+server.post("/product", upload.single("image"), (req, res, next) => {
   let errors = {};
-  let hasError = false;
-
   // Validate product fields
-  if (!req.body.name || req.body.name?.length < 2) {
-    hasError = true;
+  if (!req.body.name || req.body.name.length < 2) {
     errors.name = "The name length should be at least 2 characters";
   }
-  if (!req.body.brand || req.body.brand?.length < 2) {
-    hasError = true;
+  if (!req.body.brand || req.body.brand.length < 2) {
     errors.brand = "The brand length should be at least 2 characters";
   }
-  if (!req.body.category || req.body.category?.length < 2) {
-    hasError = true;
+  if (!req.body.category || req.body.category.length < 2) {
     errors.category = "The category length should be at least 2 characters";
   }
-  if (!req.body.price || isNaN(req.body.price) || req.body.price <= 0) {
-    hasError = true;
+  if (!req.body.price || isNaN(req.body.price) || Number(req.body.price) <= 0) {
     errors.price = "The price must be a valid positive number";
   }
-  if (!req.body.description || req.body.description?.length < 10) {
-    hasError = true;
+  if (!req.body.description || req.body.description.length < 10) {
     errors.description = "The description should be at least 10 characters";
   }
-  if (req.file) {
-    req.body.imageFilename = `/images/${req.body.imageFilename}`;
-  }
-  next();
 
-  if (hasError) {
+  // If there are validation errors, stop request
+  if (Object.keys(errors).length > 0) {
     return res.status(422).json({ errors });
   }
 
+  // Process image if uploaded
+  if (req.file) {
+    req.body.imageFilename = `/images/${req.file.filename}`;
+  }
+
+  // Add metadata
   req.body.createdAt = new Date().toISOString();
   req.body.price = Number(req.body.price);
 
@@ -94,6 +90,7 @@ server.post("/products", (req, res, next) => {
 
 // Use json-server router
 server.use(router);
+
 server.listen(4000, () => {
   console.log("JSON Server is running on port 4000");
 });

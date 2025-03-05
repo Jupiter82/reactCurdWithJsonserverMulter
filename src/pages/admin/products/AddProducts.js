@@ -38,7 +38,7 @@ function Add() {
         formData.append("image", imageFile);
       }
 
-      axios.post("http://localhost:4000/product", formData, {
+      await axios.post("http://localhost:4000/product", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       alert("Data Added Successfully!");
