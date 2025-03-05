@@ -15,6 +15,7 @@ function EditProduct() {
     imageFilename: "",
     createdAt: "",
   });
+  const [imageFile, setImageFile] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
@@ -30,8 +31,22 @@ function EditProduct() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    //Prepare formdata
+    const formData = new FormData();
+    formData.append("id", id);
+    formData.append("name", inputData.name);
+    formData.append("brand", inputData.brand);
+    formData.append("category", inputData.category);
+    formData.append("price", inputData.price);
+    formData.append("description", inputData.description);
+    formData.append("createdAt", inputData.createdAt);
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
+
     try {
-      await axios.put(`http://localhost:4000/product/${id}`, inputData);
+      await axios.put(`http://localhost:4000/product/${id}`, formData);
       alert("Data uploaded successfully!");
       navigate("/admin/products");
     } catch (error) {
@@ -103,17 +118,20 @@ function EditProduct() {
           </div>
           <div className="flex flex-col">
             <label htmlFor="imageFilename">ImageFile:</label>
+            {inputData.imageFilename && (
+              <img
+                src={`http://localhost:4000/images/${inputData.imageFilename}`}
+                alt="Uploaded"
+                className="w-32 h-32 object-cover"
+              />
+            )}
             <input
               id="imageFilename"
               type="file"
               accept="image"
+              value={imageFile}
               onChange={(e) => {
-                console.log(e.target.files[0]);
-                console.log(e.target.files[0].name);
-                setInputData({
-                  ...inputData,
-                  imageFilename: e.target.files[0].name,
-                });
+                setImageFile(e.target.files[0]);
               }}
             ></input>
           </div>

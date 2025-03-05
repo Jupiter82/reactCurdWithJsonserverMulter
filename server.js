@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Multer for file upload (before json-server router)
-server.use(upload.any());
+server.use("/images", jsonServer.defaults({ static: "public/images" }));
 
 // Manually parse JSON bodies because json-server doesn't do this before multer
 server.use((req, res, next) => {
@@ -77,6 +77,10 @@ server.post("/products", (req, res, next) => {
     hasError = true;
     errors.description = "The description should be at least 10 characters";
   }
+  if (req.file) {
+    req.body.imageFilename = `/images/${req.body.imageFilename}`;
+  }
+  next();
 
   if (hasError) {
     return res.status(422).json({ errors });

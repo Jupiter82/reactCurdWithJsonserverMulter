@@ -9,15 +9,15 @@ function ProductsList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetcheData = async () => {
+    const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:4000/product");
         setProduct(response.data);
       } catch (error) {
-        setError("an error occured while fetching data");
+        setError("an error occurred while fetching data");
       }
     };
-    fetcheData();
+    fetchData();
   }, []);
 
   const handleDelete = async (id) => {
